@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>王奕然 · 情感档案</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0c0a;
+    --paper: #f5f0e8;
+    --gold: #c9a96e;
+    --gold-dim: #8a6d3f;
+    --ash: #6b6560;
+    --smoke: #1a1714;
+    --accent: #d4826a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, opacity 0.2s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid rgba(201,169,110,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 4rem 3rem 6rem 5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(3.5rem, 6vw, 6rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.6em;
+    color: var(--gold);
+    display: block;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-tagline {
+    margin-top: 2.5rem;
+    font-size: 0.85rem;
+    color: var(--ash);
+    letter-spacing: 0.15em;
+    line-height: 2;
+    max-width: 280px;
+    opacity: 0;
+    animation: fadeUp 1s 0.8s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 3rem;
+    left: 5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    opacity: 0;
+    animation: fadeUp 1s 1.2s forwards;
+  }
+
+  .hero-scroll::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold-dim);
+    animation: expandLine 1.5s 1.5s ease forwards;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  @keyframes expandLine {
+    to { transform: scaleX(1); }
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image-placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a1510 0%, #2d2318 40%, #1a1008 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Decorative portrait frame */
+  .portrait-frame {
+    width: 65%;
+    aspect-ratio: 3/4;
+    border: 1px solid rgba(201,169,110,0.2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeIn 1.5s 0.6s forwards;
+  }
+
+  .portrait-frame::before, .portrait-frame::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(201,169,110,0.1);
+  }
+  .portrait-frame::before { inset: -8px; }
+  .portrait-frame::after { inset: -16px; }
+
+  .portrait-inner {
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    background: linear-gradient(160deg, #261e14 0%, #1a1510 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .portrait-inner::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(201,169,110,0.05), transparent);
+  }
+
+  .portrait-placeholder-icon {
+    font-size: 4rem;
+    opacity: 0.15;
+  }
+
+  .portrait-placeholder-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    opacity: 0.6;
+    text-align: center;
+  }
+
+  .hero-year {
+    position: absolute;
+    right: 3rem;
+    bottom: 3rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 6rem;
+    font-weight: 300;
+    color: rgba(201,169,110,0.06);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    user-select: none;
+  }
+
+  /* ─── DIVIDER ─── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 5rem;
+    margin: 5rem 0 3rem;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,169,110,0.3), transparent);
+  }
+
+  .divider-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ─── MOMENTS ARCHIVE ─── */
+  .moments-section {
+    padding: 0 4rem 8rem;
+  }
+
+  .moments-intro {
+    max-width: 480px;
+    margin: 0 0 4rem 1rem;
+    padding-left: 4rem;
+  }
+
+  .moments-intro h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .moments-intro p {
+    font-size: 0.82rem;
+    color: var(--ash);
+    line-height: 2;
+    letter-spacing: 0.05em;
+  }
+
+  /* Masonry-style moment cards */
+  .moments-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 80px;
+    gap: 12px;
+  }
+
+  .moment-card {
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .moment-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .moment-card:nth-child(1) { grid-column: 1/5; grid-row: 1/5; }
+  .moment-card:nth-child(2) { grid-column: 5/9; grid-row: 1/4; }
+  .moment-card:nth-child(3) { grid-column: 9/13; grid-row: 1/3; }
+  .moment-card:nth-child(4) { grid-column: 9/13; grid-row: 3/6; }
+  .moment-card:nth-child(5) { grid-column: 5/9; grid-row: 4/7; }
+  .moment-card:nth-child(6) { grid-column: 1/5; grid-row: 5/8; }
+  .moment-card:nth-child(7) { grid-column: 9/13; grid-row: 6/9; }
+  .moment-card:nth-child(8) { grid-column: 5/9; grid-row: 7/10; }
+  .moment-card:nth-child(9) { grid-column: 1/5; grid-row: 8/11; }
+  .moment-card:nth-child(10) { grid-column: 9/13; grid-row: 9/12; }
+
+  .card-bg {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  .moment-card:hover .card-bg { transform: scale(1.04); }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,8,6,0.85) 0%, rgba(10,8,6,0.1) 60%, transparent 100%);
+    transition: opacity 0.4s;
+  }
+
+  .moment-card:hover .card-overlay { opacity: 0.7; }
+
+  .card-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    transform: translateY(4px);
+    transition: transform 0.4s;
+  }
+
+  .moment-card:hover .card-content { transform: translateY(0); }
+
+  .card-work {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+
+  .card-meta {
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid rgba(201,169,110,0.4);
+    color: var(--gold);
+    background: rgba(10,8,6,0.6);
+    backdrop-filter: blur(4px);
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: all 0.3s;
+  }
+
+  .moment-card:hover .card-tag { opacity: 1; transform: translateY(0); }
+
+  /* Gradient backgrounds for cards (placeholder for actual photos) */
+  .bg-1 { background: linear-gradient(135deg, #1c1208 0%, #2e1f0e 50%, #1a110a 100%); }
+  .bg-2 { background: linear-gradient(160deg, #0e1218 0%, #172030 50%, #0c1015 100%); }
+  .bg-3 { background: linear-gradient(120deg, #1a0e0e 0%, #2d1515 100%); }
+  .bg-4 { background: linear-gradient(150deg, #0e1a14 0%, #152818 100%); }
+  .bg-5 { background: linear-gradient(140deg, #141018 0%, #1e1a2a 100%); }
+  .bg-6 { background: linear-gradient(130deg, #1a150a 0%, #2a2010 100%); }
+  .bg-7 { background: linear-gradient(145deg, #0e1018 0%, #161a28 100%); }
+  .bg-8 { background: linear-gradient(155deg, #18100e 0%, #281a16 100%); }
+  .bg-9 { background: linear-gradient(135deg, #101810 0%, #1c281a 100%); }
+  .bg-10 { background: linear-gradient(160deg, #180e10 0%, #281418 100%); }
+
+  /* Abstract visual elements inside cards */
+  .card-visual {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .card-visual::before {
+    content: '';
+    position: absolute;
+    width: 140%;
+    height: 140%;
+    border-radius: 50%;
+    opacity: 0.12;
+    transition: transform 0.8s;
+  }
+
+  .moment-card:hover .card-visual::before { transform: scale(1.1); }
+
+  .bg-1 .card-visual::before { background: radial-gradient(circle, #c9a96e 0%, transparent 70%); top: -20%; left: 20%; }
+  .bg-2 .card-visual::before { background: radial-gradient(circle, #6a8ab5 0%, transparent 70%); top: 10%; left: -10%; }
+  .bg-3 .card-visual::before { background: radial-gradient(circle, #b56a6a 0%, transparent 70%); top: -30%; right: 0; }
+  .bg-4 .card-visual::before { background: radial-gradient(circle, #6ab577 0%, transparent 70%); bottom: 0; left: 20%; }
+  .bg-5 .card-visual::before { background: radial-gradient(circle, #8a6ab5 0%, transparent 70%); top: 0; right: 20%; }
+  .bg-6 .card-visual::before { background: radial-gradient(circle, #c9a96e 0%, transparent 70%); bottom: -10%; right: -10%; }
+  .bg-7 .card-visual::before { background: radial-gradient(circle, #6a8ab5 0%, transparent 70%); top: 30%; left: 10%; }
+  .bg-8 .card-visual::before { background: radial-gradient(circle, #d4826a 0%, transparent 70%); top: -10%; left: 30%; }
+  .bg-9 .card-visual::before { background: radial-gradient(circle, #6ab577 0%, transparent 70%); bottom: 20%; right: 10%; }
+  .bg-10 .card-visual::before { background: radial-gradient(circle, #b56a6a 0%, transparent 70%); top: 20%; left: 0; }
+
+  .card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    opacity: 0.06;
+    color: var(--paper);
+    line-height: 1;
+    user-select: none;
+  }
+
+  /* ─── QUOTE SECTION ─── */
+  .quote-section {
+    padding: 8rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: center;
+    border-top: 1px solid rgba(201,169,110,0.1);
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+    margin: 0 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-section::before {
+    content: '「';
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20rem;
+    color: rgba(201,169,110,0.03);
+    top: -2rem;
+    left: 2rem;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .quote-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    align-self: flex-start;
+    margin-top: 1rem;
+  }
+
+  .quote-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--paper);
+  }
+
+  .quote-text span {
+    color: var(--gold);
+  }
+
+  .quote-attribution {
+    font-size: 0.75rem;
+    color: var(--ash);
+    letter-spacing: 0.2em;
+    margin-top: 1.5rem;
+  }
+
+  /* ─── WORKS TIMELINE ─── */
+  .works-section {
+    padding: 8rem 5rem;
+  }
+
+  .works-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-bottom: 4rem;
+    padding-left: 4rem;
+  }
+
+  .works-title span {
+    color: var(--gold);
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 4rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(201,169,110,0.3) 10%, rgba(201,169,110,0.3) 90%, transparent);
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    position: relative;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.5s, transform 0.5s;
+    align-items: start;
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -4rem;
+    top: 2.4rem;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+    transform: translateX(-2px);
+  }
+
+  .timeline-year {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--gold-dim);
+    line-height: 1;
+    padding-top: 0.2rem;
+  }
+
+  .timeline-works {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .work-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+  }
+
+  .work-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    font-weight: 300;
+  }
+
+  .work-role {
+    font-size: 0.72rem;
+    color: var(--ash);
+    letter-spacing: 0.1em;
+  }
+
+  .work-badge {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid rgba(201,169,110,0.25);
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-left: auto;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 6rem 5rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4rem;
+    border-top: 1px solid rgba(201,169,110,0.1);
+    margin: 0 4rem;
+  }
+
+  .footer-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.72rem;
+    color: var(--ash);
+    letter-spacing: 0.2em;
+    line-height: 2;
+  }
+
+  .footer-col h4 {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .footer-links a {
+    color: var(--ash);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .footer-links a::before {
+    content: '';
+    display: block;
+    width: 16px; height: 1px;
+    background: var(--gold-dim);
+    transition: width 0.3s;
+  }
+
+  .footer-links a:hover { color: var(--paper); }
+  .footer-links a:hover::before { width: 24px; }
+
+  .footer-bottom {
+    padding: 2rem 5rem;
+    margin: 0 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    color: rgba(107,101,96,0.5);
+    letter-spacing: 0.15em;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 2rem 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(14,12,10,0.8), transparent);
+    backdrop-filter: blur(0px);
+    transition: backdrop-filter 0.5s, background 0.5s;
+  }
+
+  nav.scrolled {
+    backdrop-filter: blur(20px);
+    background: rgba(14,12,10,0.85);
+    padding: 1.2rem 5rem;
+  }
+
+  .nav-logo {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--paper);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--ash);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--paper); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ─── PHOTO UPLOAD HINT ─── */
+  .upload-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .upload-hint-icon {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-dim);
+    font-size: 1.1rem;
+  }
+
+  .upload-hint-text {
+    font-size: 0.65rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--ink); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">王奕然 <span>·</span></a>
+  <ul class="nav-links">
+    <li><a href="#moments">情感档案</a></li>
+    <li><a href="#works">作品年表</a></li>
+    <li><a href="#about">关于</a></li>
+    <li><a href="#contact">联系</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Short Drama Actor · 微短剧演员</div>
+    <h1 class="hero-name">
+      王奕然
+      <em>Wang Yiran</em>
+    </h1>
+    <p class="hero-tagline">
+      那些让你停下来的瞬间<br>
+      都在这里
+    </p>
+    <div class="hero-scroll">向下探索</div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-placeholder">
+      <div class="portrait-frame">
+        <div class="portrait-inner">
+          <div class="upload-hint">
+            <div class="upload-hint-icon">✦</div>
+            <div class="upload-hint-text">배우 사진<br>이곳에 배치</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-year">2024</div>
+  </div>
+</section>
+
+<!-- MOMENTS ARCHIVE -->
+<div class="section-divider">
+  <div class="divider-line"></div>
+  <div class="divider-label">情感档案 · Emotional Archive</div>
+  <div class="divider-line"></div>
+</div>
+
+<section class="moments-section" id="moments">
+  <div class="moments-intro">
+    <h2>留住那些<br>让你心动的瞬间</h2>
+    <p>每一个场景，都是一次重新相遇。<br>这里收录了王奕然留在观众记忆中的那些时刻。</p>
+  </div>
+
+  <div class="moments-grid">
+
+    <div class="moment-card bg-1">
+      <div class="card-visual"><div class="card-num">01</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">深情款款</div>
+      <div class="card-content">
+        <div class="card-work">如果眼泪记得你</div>
+        <div class="card-meta">封煜 · 2023</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-2">
+      <div class="card-visual"><div class="card-num">02</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">双面总裁</div>
+      <div class="card-content">
+        <div class="card-work">超时空同居</div>
+        <div class="card-meta">沈誉樟 · 2024</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-3">
+      <div class="card-visual"><div class="card-num">03</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">迷人反派</div>
+      <div class="card-content">
+        <div class="card-work">他人即地狱</div>
+        <div class="card-meta">2023</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-4">
+      <div class="card-visual"><div class="card-num">04</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">民航机长</div>
+      <div class="card-content">
+        <div class="card-work">三万英尺的暗恋</div>
+        <div class="card-meta">厉赴征 · 2024</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-5">
+      <div class="card-visual"><div class="card-num">05</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">清冷医生</div>
+      <div class="card-content">
+        <div class="card-work">掌心暗渡</div>
+        <div class="card-meta">傅归渡 · 2025</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-6">
+      <div class="card-visual"><div class="card-num">06</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">先婚后爱</div>
+      <div class="card-content">
+        <div class="card-work">后来的我们</div>
+        <div class="card-meta">周怀瑾 · 2024</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-7">
+      <div class="card-visual"><div class="card-num">07</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">灵魂互换</div>
+      <div class="card-content">
+        <div class="card-work">灵魂互换后</div>
+        <div class="card-meta">傅彦之 · 2024</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-8">
+      <div class="card-visual"><div class="card-num">08</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">病痛缠身</div>
+      <div class="card-content">
+        <div class="card-work">蓄意占有</div>
+        <div class="card-meta">陆北野 · 2024</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-9">
+      <div class="card-visual"><div class="card-num">09</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">时而冷酷</div>
+      <div class="card-content">
+        <div class="card-work">我的人鱼夫君</div>
+        <div class="card-meta">齐墨北 · 2025</div>
+      </div>
+    </div>
+
+    <div class="moment-card bg-10">
+      <div class="card-visual"><div class="card-num">10</div></div>
+      <div class="card-overlay"></div>
+      <div class="card-tag">偏执大佬</div>
+      <div class="card-content">
+        <div class="card-work">偏执大佬总想独占我</div>
+        <div class="card-meta">陆城烨 · 2024</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
+  <div class="quote-label">배우의 말 · 心声</div>
+  <div>
+    <p class="quote-text">
+      每一次的挑战都是一次成长的机会，<br>
+      我非常珍惜每次的表演机会，<br>
+      努力将每一个角色都演绎得<span>尽善尽美</span>。
+    </p>
+    <div class="quote-attribution">— 王奕然</div>
+  </div>
+</section>
+
+<!-- WORKS TIMELINE -->
+<section class="works-section" id="works">
+  <h2 class="works-title">作品<span>年表</span></h2>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-year">2025</div>
+      <div class="timeline-works">
+        <div class="work-item">
+          <span class="work-title">掌心暗渡</span>
+          <span class="work-role">傅归渡 (清冷医生)</span>
+          <span class="work-badge">侯呈玥 搭档</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">我的人鱼夫君</span>
+          <span class="work-role">齐墨北</span>
+          <span class="work-badge">2025.01</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">驯养</span>
+          <span class="work-role">裴景川</span>
+          <span class="work-badge">兰岚 搭档</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">2024</div>
+      <div class="timeline-works">
+        <div class="work-item">
+          <span class="work-title">三万英尺的暗恋</span>
+          <span class="work-role">厉赴征 (民航机长)</span>
+          <span class="work-badge">抖音 화제작</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">蓄意占有</span>
+          <span class="work-role">陆北野</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">灵魂互换后</span>
+          <span class="work-role">傅彦之 (총재)</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">超时空同居</span>
+          <span class="work-role">沈誉樟 (双面总裁)</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">后来的我们</span>
+          <span class="work-role">周怀瑾</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">祁先生他暗恋成婚了</span>
+          <span class="work-role">祁砚京</span>
+          <span class="work-badge">品质남우 노미네이트</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">2023</div>
+      <div class="timeline-works">
+        <div class="work-item">
+          <span class="work-title">如果眼泪记得你</span>
+          <span class="work-role">封煜 (深情男主)</span>
+          <span class="work-badge">돌파구 작품</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">日落时分爱上你</span>
+          <span class="work-role">周光彦</span>
+        </div>
+        <div class="work-item">
+          <span class="work-title">顾少的金丝雀</span>
+          <span class="work-role">顾彦霖</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">2022</div>
+      <div class="timeline-works">
+        <div class="work-item">
+          <span class="work-title">错嫁新娘</span>
+          <span class="work-role">楚天辰</span>
+          <span class="work-badge">숏드라마 데뷔</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">2018</div>
+      <div class="timeline-works">
+        <div class="work-item">
+          <span class="work-title">对的时间对的人</span>
+          <span class="work-role">연기 데뷔작</span>
+          <span class="work-badge">데뷔</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="about">
+  <div>
+    <div class="footer-name">王奕然</div>
+    <div class="footer-tagline">
+      1994년 11월 25일 · 山西 大同<br>
+      微短剧 남배우<br>
+      全国微短剧人物大典<br>2024年度品质男演员 노미네이트
+    </div>
+  </div>
+  <div class="footer-col">
+    <h4>Navigation</h4>
+    <ul class="footer-links">
+      <li><a href="#moments">情感档案</a></li>
+      <li><a href="#works">作品年表</a></li>
+      <li><a href="#about">프로필</a></li>
+    </ul>
+  </div>
+  <div class="footer-col" id="contact">
+    <h4>Contact</h4>
+    <ul class="footer-links">
+      <li><a href="#">抖音 채널</a></li>
+      <li><a href="#">微博</a></li>
+      <li><a href="#">매니지먼트 문의</a></li>
+    </ul>
+  </div>
+</footer>
+
+<div class="footer-bottom">
+  <span>© 2025 王奕然 Official</span>
+  <span>情感档案 · Emotional Archive</span>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+
+  // Smooth ring follow
+  function animateCursor() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    cursorRing.style.left = ringX + 'px';
+    cursorRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Cursor hover effect
+  document.querySelectorAll('a, .moment-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '16px';
+      cursor.style.height = '16px';
+      cursorRing.style.width = '48px';
+      cursorRing.style.height = '48px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '8px';
+      cursor.style.height = '8px';
+      cursorRing.style.width = '32px';
+      cursorRing.style.height = '32px';
+    });
+  });
+
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.moment-card, .timeline-item').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
